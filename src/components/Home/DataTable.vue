@@ -40,7 +40,7 @@ export default {
   methods: {
     handleClickRow(rowData) {
       console.log("handleClickRow", rowData);
-      this.$router.push("/about");
+      this.$router.push(`/NEODetail/${rowData.neoRefId}`);
     },
   },
   watch: {

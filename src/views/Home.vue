@@ -41,8 +41,8 @@
 
 <script>
 // import HelloWorld from "../components/HelloWorld";
-import DatePicker from "../components/DatePicker.vue";
-import DataTable from "../components/DataTable.vue";
+import DatePicker from "../components/Home/DatePicker.vue";
+import DataTable from "../components/Home/DataTable.vue";
 export default {
   name: "Home",
   data() {
