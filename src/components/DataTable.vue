@@ -2,27 +2,32 @@
   <div class="container">
     <v-data-table
       :headers="headers"
-      :items="desserts"
-      :items-per-page="10"
+      :items="neos"
       class="elevation-1"
     ></v-data-table>
   </div>
 </template>
 <script>
 export default {
+  props: {
+    neoAll: Array,
+  },
   data() {
     return {
       headers: [
-        { text: "Passenger Name", value: "name" },
-        { text: "Number Of Trips", value: "trips" },
-        { text: "Airline", value: "airline[0].name" },
-        { text: "Logo", value: "logo" },
-        { text: "Website", value: "website" },
+        { text: "NEO Name", value: "neoName" },
+        { text: "Hazardous", value: "hazardous" },
+        { text: "Closest Approach to Earth", value: "Date" },
       ],
-      desserts: [],
+      neos: [],
       loading: true,
       page: 1,
     };
+  },
+  watch: {
+    neoAll: function (newNeo) {
+      this.neos = newNeo;
+    },
   },
 };
 </script>
