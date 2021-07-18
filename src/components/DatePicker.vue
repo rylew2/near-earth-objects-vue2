@@ -1,35 +1,19 @@
 <template>
-  <v-row>
-    <v-col cols="12" sm="6" md="4">
-      <v-menu
-        ref="menu"
-        v-model="menu"
-        :close-on-content-click="false"
-        :return-value.sync="date"
-        transition="scale-transition"
-        offset-y
-        min-width="auto"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-text-field
-            v-model="date"
-            :label="label"
-            prepend-icon="mdi-calendar"
-            readonly
-            v-bind="attrs"
-            v-on="on"
-          ></v-text-field>
-        </template>
-        <v-date-picker v-model="date" no-title scrollable>
-          <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-          <v-btn text color="primary" @click="$refs.menu.save(date)">
-            OK
-          </v-btn>
-        </v-date-picker>
-      </v-menu>
-    </v-col>
-  </v-row>
+  <div class="dateContainer">
+    <h3 class="dateLabel">
+      <label :for="id">{{ label }}:</label>
+    </h3>
+
+    <input
+      type="date"
+      :id="id"
+      name="trip-start"
+      :value="date"
+      :min="dateMin"
+      :max="dateMax"
+      @change="onChange($event)"
+    />
+  </div>
 </template>
 
 <script>
@@ -37,14 +21,39 @@ export default {
   name: "DatePicker",
   props: {
     label: String,
+    date: String,
+    id: String,
+    dateMin: String,
+    dateMax: String,
   },
   data: () => ({
-    date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-      .toISOString()
-      .substr(0, 10),
+    // date: this.date,
     menu: false,
     modal: false,
     menu2: false,
   }),
+  methods: {
+    onChange(e) {
+      console.log("onchange in datatable => ", [
+        this.label,
+        e.target.id,
+        e.target.value,
+      ]);
+      this.$emit("date-change", [this.label, e.target.value]);
+    },
+  },
 };
 </script>
+<style scoped>
+.dateContainer {
+  /* border: 1px solid; */
+  margin: 15 auto;
+}
+.dateLabel {
+  font-style: bold;
+}
+
+input {
+  font-size: 2rem;
+}
+</style>

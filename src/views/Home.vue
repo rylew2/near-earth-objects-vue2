@@ -1,15 +1,41 @@
 <template>
   <div>
-    <v-row class="dateRow" align="center">
-      <v-col>
-        <DatePicker label="Start Date" />
+    <v-row class="dateRow">
+      <v-col align="center">
+        <DatePicker
+          @date-change="onDateChange"
+          label="Start Date"
+          id="startDate"
+          :date="startDate"
+          :dateMax="this.endDate"
+        />
       </v-col>
+      <v-col align="center">
+        <DatePicker
+          @date-change="onDateChange"
+          label="End Date"
+          id="End Date"
+          :date="endDate"
+          :dateMin="this.startDate"
+        />
+      </v-col>
+    </v-row>
+    <v-row v-if="!this.dataTableLoading">
       <v-col>
-        <DatePicker label="End Date" />
+        <v-subheader class="justify-center"
+          >{{ this.neo.length }} NEO Results for
+          {{ this.formatDateString(startDate) }} to
+          {{ this.formatDateString(endDate) }}</v-subheader
+        >
       </v-col>
     </v-row>
 
-    <DataTable :apiKey="apiKey" :neoAll="this.neo" />
+    <DataTable
+      :apiKey="apiKey"
+      :neoAll="this.neo"
+      :dataTableLoading="this.dataTableLoading"
+      @dataTable-loaded="dataTableLoaded"
+    />
   </div>
 </template>
 
@@ -25,6 +51,9 @@ export default {
       next: "",
       prev: "",
       neo: [],
+      startDate: this.getToday(),
+      endDate: this.getToday(),
+      dataTableLoading: true,
     };
   },
   components: {
@@ -33,16 +62,17 @@ export default {
     DataTable,
   },
   async created() {
-    const neoResults = await this.fetchAsteroids();
-    const { next, prev } = neoResults.links;
-    console.log("next Link ==>", next);
-    console.log("prev link ==> ", prev);
-
-    let neoFlattened = this.formatNeoData(neoResults.near_earth_objects);
-    console.log("neoFlattened ", neoFlattened);
-    this.neo = neoFlattened;
+    this.fetchAndSetNEO();
   },
   methods: {
+    getToday() {
+      return new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10);
+    },
+    formatDateString(date) {
+      return new Date(date).toString().slice(0, 15);
+    },
     formatNeoData(neo) {
       let result = [];
       for (let [key, val] of Object.entries(neo)) {
@@ -59,13 +89,31 @@ export default {
       }
       return result;
     },
-    async fetchAsteroids() {
-      const startDate = "2015-09-07";
-      const endDate = "2015-09-08";
+    async fetchNEO(startDate = this.startDate, endDate = this.endDate) {
       const url = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${this.apiKey}`;
       const res = await fetch(url);
       const data = await res.json();
       return data;
+    },
+    async onDateChange(eventArray) {
+      this.dataTableLoading = true;
+      const [dateType, date] = eventArray;
+      if (dateType === "Start Date") {
+        this.startDate = date;
+      } else {
+        this.endDate = date;
+      }
+      this.fetchAndSetNEO();
+    },
+    async fetchAndSetNEO() {
+      const neoResults = await this.fetchNEO();
+      const neoFlattened = this.formatNeoData(neoResults.near_earth_objects);
+
+      this.neo = neoFlattened;
+      this.dataTableLoaded();
+    },
+    dataTableLoaded() {
+      this.dataTableLoading = false;
     },
   },
 };
