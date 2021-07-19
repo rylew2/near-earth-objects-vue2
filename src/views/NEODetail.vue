@@ -1,9 +1,23 @@
 <template>
-  <div class="about">
-    <BackIcon iconType="arrow-left" />
-
-    <h1>This is NEO Detail page {{ neoRefId }}</h1>
-    <VerticalTabs />
+  <div>
+    <v-row>
+      <BackIcon iconType="arrow-left" />
+    </v-row>
+    <v-row :v-if="isImgLoaded" class="justify-center">
+      <img
+        @loaded="isImgLoaded = true"
+        :src="apodURL"
+        alt="Astronomy Picture of the Day"
+      />
+    </v-row>
+    <v-row class="verticaltab-row justify-center">
+      <VerticalTabs
+        :neoDetails="neoDetails"
+        :tabLabels="tabLabels"
+        :tabsLoading="tabsLoading"
+        color="blue lighten-4"
+      />
+    </v-row>
   </div>
 </template>
 
@@ -20,8 +34,11 @@ export default {
     return {
       apiKey: process.env.VUE_APP_NASA_API_KEY,
       neoRefId: this.$route.params.id,
-      neoDetails: [],
+      neoDetails: {},
       tabsLoading: true,
+      tabLabels: ["Basics", "Size", "Closest Approaches"],
+      apodURL: "",
+      isImgLoaded: false,
     };
   },
   created() {
@@ -30,11 +47,10 @@ export default {
   },
   methods: {
     async fetchAndSetNEODetail() {
-      const neoResults = await this.fetchNEO();
-      const neoFlattened = this.formatNeoData(neoResults.near_earth_objects);
-
-      this.neoDetails = neoFlattened;
+      const neoResults = await this.fetchNEODetail();
+      this.neoDetails = neoResults;
       this.tabsLoading = false;
+      this.apodURL = await this.fetchAPOD();
     },
     async fetchNEODetail() {
       const url = `https://api.nasa.gov/neo/rest/v1/neo/${this.neoRefId}?api_key=${this.apiKey}`;
@@ -52,6 +68,7 @@ export default {
           });
         }
       }
+      console.log("NEODetail neo result =>", result);
       return result;
     },
     async fetchAPOD() {
@@ -60,6 +77,14 @@ export default {
       const data = await res.json();
       return data.url;
     },
+    onImgLoad() {
+      this.isImgLoaded = true;
+    },
   },
 };
 </script>
+<style scoped>
+img {
+  height: 25vh;
+}
+</style>

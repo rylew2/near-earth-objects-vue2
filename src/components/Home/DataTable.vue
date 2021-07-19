@@ -1,22 +1,18 @@
 <template lang="">
-  <div class="container">
-    <v-progress-circular
-      v-if="this.dataTableLoading"
-      indeterminate
-      color="blue"
-      :size="70"
-      :width="7"
-    ></v-progress-circular>
-
-    <v-data-table
-      v-if="!this.dataTableLoading"
-      :headers="headers"
-      :items="neos"
-      class="elevation-4 row-pointer"
-      @click:row="handleClickRow"
-      :items-per-page="10"
-    ></v-data-table>
-  </div>
+  <v-row>
+    <v-col>
+      <div class="container">
+        <v-data-table
+          v-if="!this.dataTableLoading && dateRange <= 7 && dateRange >= 0"
+          :headers="headers"
+          :items="neos"
+          class="elevation-4 row-pointer"
+          @click:row="handleClickRow"
+          :items-per-page="10"
+        ></v-data-table>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 <script>
 // import AboutVue from "../views/About.vue";
@@ -24,6 +20,7 @@ export default {
   props: {
     neoAll: Array,
     dataTableLoading: Boolean,
+    dateRange: Number,
   },
   data() {
     return {

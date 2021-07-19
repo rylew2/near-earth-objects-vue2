@@ -1,40 +1,39 @@
 <template>
   <div>
     <v-row class="dateRow">
-      <v-col align="center">
-        <DatePicker
-          @date-change="onDateChange"
-          label="Start Date"
-          id="startDate"
-          :date="startDate"
-          :dateMax="this.endDate"
-        />
-      </v-col>
-      <v-col align="center">
-        <DatePicker
-          @date-change="onDateChange"
-          label="End Date"
-          id="End Date"
-          :date="endDate"
-          :dateMin="this.startDate"
-        />
-      </v-col>
+      <DatePicker
+        @date-change="onDateChange"
+        label="Start Date"
+        id="startDate"
+        :date="startDate"
+      />
+      <DatePicker
+        @date-change="onDateChange"
+        label="End Date"
+        id="End Date"
+        :date="endDate"
+      />
     </v-row>
-    <v-row v-if="!this.dataTableLoading">
-      <v-col>
-        <v-subheader class="justify-center"
-          >{{ this.neo.length }} NEO Results for
-          {{ this.formatDateString(startDate) }} to
-          {{ this.formatDateString(endDate) }}</v-subheader
-        >
-      </v-col>
-    </v-row>
-
+    <ResultHeader
+      :neoLength="neo.length"
+      :startDate="startDate"
+      :endDate="endDate"
+      :dataTableLoading="dataTableLoading"
+    />
+    <Loader
+      color="blue"
+      :size="70"
+      :width="7"
+      :dataTableLoading="dataTableLoading"
+      :dateRange="dateRange"
+    />
+    <InvalidRange :dateRange="dateRange" />
     <DataTable
       :apiKey="apiKey"
       :neoAll="this.neo"
       :dataTableLoading="this.dataTableLoading"
       @dataTable-loaded="dataTableLoaded"
+      :dateRange="dateRange"
     />
   </div>
 </template>
@@ -43,23 +42,28 @@
 // import HelloWorld from "../components/HelloWorld";
 import DatePicker from "../components/Home/DatePicker.vue";
 import DataTable from "../components/Home/DataTable.vue";
+import ResultHeader from "../components/Home/ResultHeader.vue";
+import Loader from "../components/Home/Loader.vue";
+import InvalidRange from "../components/Home/InvalidRange.vue";
 export default {
   name: "Home",
   data() {
     return {
       apiKey: process.env.VUE_APP_NASA_API_KEY,
-      next: "",
-      prev: "",
       neo: [],
       startDate: this.getToday(),
       endDate: this.getToday(),
       dataTableLoading: true,
+      dateRange: 0,
     };
   },
   components: {
     // HelloWorld,
     DatePicker,
     DataTable,
+    ResultHeader,
+    Loader,
+    InvalidRange,
   },
   async created() {
     this.fetchAndSetNEO();
@@ -69,9 +73,6 @@ export default {
       return new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10);
-    },
-    formatDateString(date) {
-      return new Date(date).toString().slice(0, 15);
     },
     formatNeoData(neo) {
       let result = [];
@@ -103,7 +104,16 @@ export default {
       } else {
         this.endDate = date;
       }
-      this.fetchAndSetNEO();
+      this.setDateRange();
+      if (this.dateRange >= 0 && this.dateRange <= 7) {
+        this.fetchAndSetNEO();
+      }
+    },
+    setDateRange() {
+      const day = 86400000;
+      this.dateRange = Math.floor(
+        (Date.parse(this.endDate) - Date.parse(this.startDate)) / day
+      );
     },
     async fetchAndSetNEO() {
       const neoResults = await this.fetchNEO();

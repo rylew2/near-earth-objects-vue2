@@ -1,19 +1,21 @@
 <template>
-  <div class="dateContainer">
-    <h3 class="dateLabel">
-      <label :for="id">{{ label }}:</label>
-    </h3>
+  <v-col align="center">
+    <div class="dateContainer">
+      <h3 class="dateLabel">
+        <label :for="id">{{ label }}:</label>
+      </h3>
 
-    <input
-      type="date"
-      :id="id"
-      name="trip-start"
-      :value="date"
-      :min="dateMin"
-      :max="dateMax"
-      @change="onChange($event)"
-    />
-  </div>
+      <input
+        type="date"
+        :id="id"
+        name="trip-start"
+        :value="date"
+        :min="dateMin"
+        :max="dateMax"
+        @change="onChange($event)"
+      />
+    </div>
+  </v-col>
 </template>
 
 <script>

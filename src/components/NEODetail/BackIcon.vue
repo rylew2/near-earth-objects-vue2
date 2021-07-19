@@ -1,9 +1,7 @@
 <template>
   <div>
     <router-link to="/">
-      <v-icon large color="green darken-2"
-        >mdi-{{ iconType }}</v-icon
-      ></router-link
+      <v-icon large color="black">mdi-{{ iconType }}</v-icon></router-link
     >
   </div>
 </template>
