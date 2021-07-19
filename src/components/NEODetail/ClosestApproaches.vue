@@ -20,6 +20,10 @@
             {{ Math.floor(approach.miss_distance.miles) }}</v-list-item-title
           >
           <v-list-item-subtitle>
+            Approach Date:
+            {{ approach.close_approach_date }}
+          </v-list-item-subtitle>
+          <v-list-item-subtitle>
             Orbiting Body: {{ approach.orbiting_body }}
           </v-list-item-subtitle>
           <v-list-item-subtitle>
@@ -47,11 +51,11 @@ export default {
   },
   methods: {
     setClosestApproaches() {
-      const sortedApproaches = this.neoDetails.close_approach_data.sort(
-        (a, b) => (a.miss_distance.miles > b.miss_distance.miles ? 1 : -1)
-      );
-      return sortedApproaches.slice(0, 5);
-      //   this.closestApproaches = sortedApproaches.slice(0, 5);
+      return this.neoDetails.close_approach_data
+        .sort((a, b) =>
+          a.miss_distance.miles > b.miss_distance.miles ? 1 : -1
+        )
+        .slice(0, 5);
     },
   },
 };
