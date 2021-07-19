@@ -7,10 +7,8 @@
         </a>
       </v-toolbar-title>
     </v-toolbar>
-    <v-tabs fixed-tabs vertical>
-      <v-tab v-for="tabName in tabLabels" :key="tabName.id"
-        >{{ tabName }}
-      </v-tab>
+    <v-tabs fixed-tabs vertical ref="tabs" hide-slider>
+      <v-tab v-for="tabName in tabLabels" :key="tabName">{{ tabName }} </v-tab>
 
       <v-tab-item>
         <BasicDetails :neoDetails="neoDetails" />
@@ -31,6 +29,9 @@ import SizeDetails from "./SizeDetails.vue";
 import ClosestApproaches from "./ClosestApproaches.vue";
 export default {
   name: "VerticalTabs",
+  created() {
+    this.$refs.tabs && this.$refs.tabs.onResize();
+  },
   props: {
     tabLabels: Array,
     tabsLoading: Boolean,
@@ -46,6 +47,6 @@ export default {
 </script>
 <style scoped>
 .verticalTabsCard {
-  max-width: 90vw;
+  /* max-width: 90vw; */
 }
 </style>

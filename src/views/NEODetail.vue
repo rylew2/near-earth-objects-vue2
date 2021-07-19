@@ -3,9 +3,10 @@
     <v-row>
       <BackIcon iconType="arrow-left" />
     </v-row>
-    <v-row :v-if="isImgLoaded" class="justify-center">
+    <v-row class="justify-center">
       <img
-        @loaded="isImgLoaded = true"
+        :v-show="isImgLoaded"
+        @load="isImgLoaded = true"
         :src="apodURL"
         alt="Astronomy Picture of the Day"
       />

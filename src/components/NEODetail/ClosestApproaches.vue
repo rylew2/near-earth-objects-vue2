@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <v-card flat>
     <v-card-text>
       <v-list-item>
