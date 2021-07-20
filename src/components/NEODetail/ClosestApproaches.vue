@@ -4,7 +4,9 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="font-weight-bold"
-            >Top 5 Closest Approaches</v-list-item-title
+            >Top
+            {{ closestApproaches.length >= 5 ? 5 : closestApproaches.length }}
+            Closest Approaches</v-list-item-title
           >
         </v-list-item-content>
       </v-list-item>

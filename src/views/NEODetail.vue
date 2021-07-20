@@ -5,8 +5,9 @@
     </v-row>
     <v-row class="justify-center">
       <img
+        :class="isImgLoaded ? 'show' : 'hide'"
         :v-show="isImgLoaded"
-        @load="isImgLoaded = true"
+        @load="onImgLoad"
         :src="apodURL"
         alt="Astronomy Picture of the Day"
       />
@@ -79,6 +80,7 @@ export default {
       return data.url;
     },
     onImgLoad() {
+      console.log("image loaded");
       this.isImgLoaded = true;
     },
   },
@@ -87,5 +89,9 @@ export default {
 <style scoped>
 img {
   height: 25vh;
+}
+
+img.hide {
+  visibility: hidden;
 }
 </style>

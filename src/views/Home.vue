@@ -10,7 +10,7 @@
       <DatePicker
         @date-change="onDateChange"
         label="End Date"
-        id="End Date"
+        id="endDate"
         :date="endDate"
       />
     </v-row>
