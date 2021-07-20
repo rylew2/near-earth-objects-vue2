@@ -45,7 +45,6 @@ export default {
   },
   created() {
     this.fetchAndSetNEODetail();
-    console.log(this.neoDetails);
   },
   methods: {
     async fetchAndSetNEODetail() {
@@ -70,7 +69,6 @@ export default {
           });
         }
       }
-      console.log("NEODetail neo result =>", result);
       return result;
     },
     async fetchAPOD() {
@@ -80,7 +78,6 @@ export default {
       return data.url;
     },
     onImgLoad() {
-      console.log("image loaded");
       this.isImgLoaded = true;
     },
   },

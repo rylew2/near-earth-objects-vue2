@@ -1,31 +1,21 @@
-"<div title="Foobar">
-    <v-row class="dateRow">
-        <v-col align="center">
-            <div class="dateContainer">
-                <h3 class="dateLabel"><label for="startDate">Start Date:</label></h3> <input type="date" id="startDate"
-                    name="trip-start">
-            </div>
-        </v-col>
-        <v-col align="center">
-            <div class="dateContainer">
-                <h3 class="dateLabel"><label for="endDate">End Date:</label></h3> <input type="date" id="endDate"
-                    name="trip-start">
-            </div>
-        </v-col>
-    </v-row>n
-    <!---->
-    <v-row>
-        <v-col align="center">
-            <v-progress-circular indeterminate="" color="blue" size="70" width="7">
-            </v-progress-circular>
-        </v-col>
-    </v-row>n
-    <!---->
-    <v-row apikey="wPs6ggPHVgUie4zVFRWk8geLLfLqXp8LUpXEpiOQ">
-        <v-col>
-            <div class="container">n
-                <!---->n
-            </div>
-        </v-col>
-    </v-row>n
-</div>"
+"<v-card-stub loaderheight="4" tag="div" class="verticalTabsCard" close_approach_data="">
+    <v-toolbar-stub color="blue" elevation="16" tag="header" extensionheight="48" src="">
+        <v-toolbar-title-stub><a href="http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=3542519" target="_blank">(2010 PK9)
+            </a></v-toolbar-title-stub>
+    </v-toolbar-stub>
+    <v-tabs-stub activeclass="" fixedtabs="true" hideslider="true" nexticon="$next" previcon="$prev"
+        slidersize="2" vertical="true">
+        <v-tab-stub ripple="true">Basics </v-tab-stub>
+        <v-tab-stub ripple="true">Size </v-tab-stub>
+        <v-tab-stub ripple="true">Closest Approaches </v-tab-stub>
+        <v-tab-item-stub>
+            <basicdetails-stub neodetails="[object Object]"></basicdetails-stub>
+        </v-tab-item-stub>
+        <v-tab-item-stub>
+            <sizedetails-stub neodetails="[object Object]"></sizedetails-stub>
+        </v-tab-item-stub>
+        <v-tab-item-stub>
+            <closestapproaches-stub neodetails="[object Object]"></closestapproaches-stub>
+        </v-tab-item-stub>
+    </v-tabs-stub>n
+</v-card-stub>"

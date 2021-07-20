@@ -18,14 +18,5 @@
 <script>
 export default {
   name: "App",
-
-  data: () => ({
-    //
-  }),
-  created() {
-    console.log("ryan");
-    console.log(process.env);
-    console.log(process.env.NASA_API_KEY);
-  },
 };
 </script>
